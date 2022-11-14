@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aparedes <aparedes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/13 13:17:55 by aparedes          #+#    #+#             */
-/*   Updated: 2022/11/13 17:36:34 by aparedes         ###   ########.fr       */
+/*   Created: 2022/11/14 10:55:00 by aparedes          #+#    #+#             */
+/*   Updated: 2022/11/14 11:49:59 by aparedes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	init_args(t_data *data, int args, char **argv)
+int static	init_args(t_data *data, int args, char **argv)
 {
 	data->n_philo = ft_atoi(argv[1]);
 	data->t_die = ft_atoi(argv[2]);
@@ -58,7 +58,7 @@ int	check_and_init(t_data *data, int args, char **argv)
 	return (1);
 }
 
-int	create_forks(t_data *data, int n_philo)
+int static	create_forks(t_data *data, int n_philo)
 {
 	int	i;
 
@@ -80,10 +80,10 @@ int	create_table(t_data *data)
 	int	i;
 
 	data->philo = malloc(sizeof(t_philo) * data->n_philo);
-	gettimeofday(&data->t_start, NULL);
+	gettimeofday(&data->t_started, NULL);
 	if (!create_forks(data, data->n_philo) || !data->philo)
 		return (ft_error());
-	if (pthread_create(&data->id_thread, NULL, &thread_monitor, data))
+	if (pthread_create(&data->th_monitor, NULL, &thread_monitor, data))
 		return (ft_error());
 	i = 0;
 	data->run = 1;
@@ -107,6 +107,5 @@ int	create_table(t_data *data)
 int	ft_error(void)
 {
 	printf("\nError\n");
-	printf("Input Order Should be: ./philo {Number of Philosophers} ");
 	return (0);
 }

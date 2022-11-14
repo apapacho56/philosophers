@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aparedes <aparedes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/13 13:18:22 by aparedes          #+#    #+#             */
-/*   Updated: 2022/11/13 17:36:48 by aparedes         ###   ########.fr       */
+/*   Created: 2022/11/14 11:09:07 by aparedes          #+#    #+#             */
+/*   Updated: 2022/11/14 11:51:00 by aparedes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,19 @@ typedef struct s_data
 	int				t_sleep;
 	int				musteat;
 	int				run;
-	pthread_t		id_thread;
-	struct timeval	t_start;
+	pthread_t		th_monitor;
+	struct timeval	t_started;
 }	t_data;
 
-int		create_table(t_data *dta);
-int		check_and_init(t_data *dta, int ac, char **av);
-
+int		create_table(t_data *data);
+int		check_and_init(t_data *data, int args, char **argv);
 void	ft_msleep(long ms);
 int		diff_time(struct timeval *begin);
-
-void	*thread_monitor(void *p_dta);
-int		is_dead(t_data *dta, t_philo *philo);
-void	output(t_data *dta, t_philo *philo, int sig);
-void	*philo(void *t_d_philo);
-
-int		free_threads(t_data *dta);
+void	*thread_monitor(void *phi_data);
+int		is_dead(t_data *data, t_philo *philo);
+void	output(t_data *data, t_philo *philo, int sig);
+void	*philo(void *pt_philo);
+int		free_threads(t_data *data);
 int		ft_atoi(const char *str);
 int		ft_error(void);
 

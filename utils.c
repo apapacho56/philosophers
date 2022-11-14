@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aparedes <aparedes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/13 17:11:57 by aparedes          #+#    #+#             */
-/*   Updated: 2022/11/13 17:12:00 by aparedes         ###   ########.fr       */
+/*   Created: 2022/11/14 11:52:08 by aparedes          #+#    #+#             */
+/*   Updated: 2022/11/14 11:56:00 by aparedes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,20 @@ int	diff_time(struct timeval *begin)
 	int				time;
 
 	gettimeofday(&now, NULL);
-	time = (now.tv_sec - begin->tv_sec) * 1000
-		+ (now.tv_usec - begin->tv_usec) / 1000;
+	time = (now.tv_sec - begin->tv_sec) * 1000 + \
+		(now.tv_usec - begin->tv_usec) / 1000;
 	return (time);
 }
 
-int	is_dead(t_data *dta, t_philo *philo)
+int	is_dead(t_data *data, t_philo *philo)
 {
 	long	time;
 
 	time = diff_time(&philo->last_meal);
-	if (time >= dta->t_die)
+	if (time >= data->t_die)
 	{
-		output(dta, philo, 5);
-		philo->eated = dta->musteat + 1;
+		output(data, philo, 5);
+		philo->eated = data->musteat + 1;
 		return (1);
 	}
 	return (0);
@@ -68,20 +68,20 @@ int	ft_atoi(const char *str)
 {
 	int	i;
 	int	len;
-	int	nb;
+	int	num;
 
-	nb = 0;
+	num = 0;
 	len = 0;
 	i = 0;
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		nb = nb + str[i] - '0';
+		num = num + str[i] - '0';
 		if (str[i + 1] >= '0' && str[i + 1] <= '9')
-			nb *= 10;
-		if (len > 10 || nb > 2147483647)
+			num *= 10;
+		if (len > 10 || num > 2147483647)
 			return (-1);
 		len++;
 		i++;
 	}
-	return (nb);
+	return (num);
 }

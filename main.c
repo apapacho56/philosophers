@@ -5,31 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aparedes <aparedes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/13 13:18:03 by aparedes          #+#    #+#             */
-/*   Updated: 2022/11/13 17:36:38 by aparedes         ###   ########.fr       */
+/*   Created: 2022/11/14 10:58:08 by aparedes          #+#    #+#             */
+/*   Updated: 2022/11/14 11:04:40 by aparedes         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*thread_monitor(void *p_dta)
+void	*thread_monitor(void *phi_data)
 {
 	int		i;
-	int		j;
+	int		eated;
 	t_data	*data;
 
-	data = (t_data *)p_dta;
+	data = (t_data *)phi_data;
 	ft_msleep(data->t_die * 0.9);
 	while (1)
 	{
 		i = 0;
-		j = 0;
+		eated = 0;
 		while (i < data->n_philo)
 		{
 			if (data->philo[i].eated >= data->musteat)
-				j++;
+				eated++;
 			if (is_dead(data, &data->philo[i])
-				|| i == data->n_philo)
+				|| eated == data->n_philo)
 			{
 				data->run = 0;
 				free_threads(data);
@@ -45,7 +45,7 @@ void	output(t_data *data, t_philo *philo, int sig)
 {
 	int	time;
 
-	time = diff_time(&data->t_start);
+	time = diff_time(&data->t_started);
 	if (sig == 1)
 		printf("%d %d has taken a fork\n", time, philo->pos);
 	else if (sig == 2)
@@ -66,11 +66,11 @@ void	output(t_data *data, t_philo *philo, int sig)
 		printf("%d %d died\n", time, philo->pos);
 }
 
-void	*philo(void *t_d_philo)
+void	*philo(void *pt_philo)
 {
 	t_philo	*philo;
 
-	philo = (t_philo *)t_d_philo;
+	philo = (t_philo *)pt_philo;
 	if (philo->pos % 2 == 0)
 		ft_msleep(philo->data->t_eat * 0.9);
 	while (philo->data->run == 1)
@@ -96,7 +96,7 @@ int	main(int args, char **argv)
 	if (check_and_init(&data, args, argv) && create_table(&data))
 	{
 		i = 0;
-		pthread_join(data.id_thread, NULL);
+		pthread_join(data.th_monitor, NULL);
 		while (i < data.n_philo && data.run == 1)
 		{
 			pthread_join(data.philo[i].thread, NULL);
